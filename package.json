@@ -1,0 +1,22 @@
+{
+  "name": "com.quanty-bandit.qb.utility",
+  "version": "1.0.0",
+  "displayName": "qb.Utility",
+  "description": "Utility blob",
+  "unity": "6000.2",
+  "gitDependencies": {
+	"com.unity.localization":"1.5.8"	
+  },
+  "keywords": [
+    "Utility",
+	"Webrequest",
+	"Localization",
+	"Zip",
+	"Compression"
+  ],
+  "author": {
+    "name": "quanty bandit",
+    "email": "pascal@quantybandit.com",
+    "url": "https://quantybandit.com"
+  }
+}
