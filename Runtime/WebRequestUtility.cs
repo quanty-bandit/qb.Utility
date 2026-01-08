@@ -8,6 +8,10 @@ using System.Net.Http;
 
 namespace qb.Utility
 {
+    /// <summary>
+    /// Provides utility methods for performing web requests, handling JSON deserialization, and checking file existence
+    /// over HTTP.
+    /// </summary>
     public static class WebRequestUtility
     {
         public class DataWebRequestResult<T>

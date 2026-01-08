@@ -3,6 +3,9 @@ using System.IO.Compression;
 using System.Text;
 namespace qb.Utility
 {
+    /// <summary>
+    /// Provides utility methods for compressing and decompressing strings using GZip.
+    /// </summary>
     public static class ZipUtility
     {
         public static void CopyTo(Stream src, Stream dest)

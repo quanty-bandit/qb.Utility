@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 namespace qb.Utility
 {
+    /// <summary>
+    /// Provides utility methods for converting between SystemLanguage enums, CultureInfo codes, and English language
+    /// names for localization purposes.
+    /// </summary>
     public static class LocalizationUtility
     {
         /// <summary>
