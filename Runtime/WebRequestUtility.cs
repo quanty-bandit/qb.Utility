@@ -1,10 +1,11 @@
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
 using System;
-using System.Threading.Tasks;
-using UnityEngine.Networking;
 using System.Net.Http;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace qb.Utility
 {
@@ -36,7 +37,11 @@ namespace qb.Utility
             }
             public string FormatedError => !success?$"[{responseCode}]\n{error}":"";
         }
+#if UNITY_WEBGL
+        public static async Awaitable<DataWebRequestResult<T>> RequestData<T>(string url, Action<float> onProgress = null, params string[] headerParameters)
+#else
         public static async Task<DataWebRequestResult<T>> RequestData<T>(string url, Action<float> onProgress = null, params string[] headerParameters)
+#endif
         {
             try
             {
@@ -54,9 +59,13 @@ namespace qb.Utility
                     while (!op.isDone)
                     {
                         onProgress?.Invoke(op.progress);
+#if UNITY_WEBGL
+                        await Awaitable.MainThreadAsync();                            
+#else
                         await Task.Yield();
+#endif
                     }
-                    
+
                     return new DataWebRequestResult<T>(uwr.result == UnityWebRequest.Result.Success, uwr.error, uwr.responseCode, UserializeFromJsonString<T>(uwr.downloadHandler.text));
                 }
             }
@@ -66,7 +75,11 @@ namespace qb.Utility
             }
 
         }
+#if UNITY_WEBGL
+        public static async Awaitable<DataWebRequestResult<string>> RequestString(string url,Action<float> onProgress = null,params string[] headerParameters)
+#else
         public static async Task<DataWebRequestResult<string>> RequestString(string url,Action<float> onProgress = null,params string[] headerParameters)
+#endif
         {
             try
             {
@@ -84,9 +97,13 @@ namespace qb.Utility
                     while (!op.isDone)
                     {
                         onProgress?.Invoke(op.progress);
+#if UNITY_WEBGL
+                        await Awaitable.MainThreadAsync();                            
+#else
                         await Task.Yield();
+#endif
                     }
-                    return new DataWebRequestResult<string>(uwr.result == UnityWebRequest.Result.Success, uwr.error, uwr.responseCode, uwr.downloadHandler.text);
+                        return new DataWebRequestResult<string>(uwr.result == UnityWebRequest.Result.Success, uwr.error, uwr.responseCode, uwr.downloadHandler.text);
                 }
             }
             catch (Exception e)
@@ -183,8 +200,11 @@ namespace qb.Utility
             return JsonConvert.DeserializeObject<T>(jsonString, StaticJsonSerializerSettings);
         }
 
-
+#if UNITY_WEBGL
+        public static async Awaitable<bool> CheckFileExists(string url)
+#else
         public static async Task<bool> CheckFileExists(string url)
+#endif
         {
             using (HttpClient client = new HttpClient())
             {
